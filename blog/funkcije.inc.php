@@ -1,6 +1,6 @@
 <?php
 
-include("baza.php");
+include("../baza.php");
 
 function dodaj_objavu($naziv, $tekst, $datum, $konekcija){
     $sql = "INSERT INTO post VALUES (null, ?, ?, ?)";
