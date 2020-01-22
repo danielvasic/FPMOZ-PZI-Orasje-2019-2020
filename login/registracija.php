@@ -16,7 +16,7 @@ include ("../zaglavlje.php");
 
     <div class="row">
         <div class="col">
-            <form method="POST" action="/pzi-blog/login/registracija.php">
+            <form method="POST" action="registracija.php">
                 <div class="form-group">
                     <label>Ime:</label>
                     <input type="text" name="ime" class="form-control" />
