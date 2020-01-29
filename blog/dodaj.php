@@ -18,7 +18,14 @@ if (isset($_POST["naslov"])){
     $naziv_slike = $_FILES["slika"]["name"];
     $putanja_slike = $direktorij . $naziv_slike;
     move_uploaded_file($_FILES["slika"]["tmp_name"], $putanja_slike);
-    dodaj_objavu($naslov, $tekst, $naziv_slike, $datum, $konekcija);
+    if (isset($_POST["id"]))
+        uredi_objavu(intval($_POST["id"]), $naslov, $tekst, $naziv_slike, $datum, $konekcija);
+    else
+        dodaj_objavu($naslov, $tekst, $naziv_slike, $datum, $konekcija);
+}
+
+if (isset($_GET["id"])){
+    $objava = dohvati_objavu(intval($_GET["id"]), $konekcija);
 }
 
 $objave = dohvati_objave($konekcija);
@@ -37,23 +44,29 @@ include ("../zaglavlje.php");
                 <a href="../login/logout.php">ovdje</a>.
             </p>
             <form method="POST" enctype="multipart/form-data" action="dodaj.php">
+                <?php if (isset($objava["id"])) { ?>
+                    <input type="hidden" name="id" value="<?php echo ($objava["id"]); ?>" />
+                <?php } ?>
                 <div class="form-group">
                     <label>Unesite naslov objave:</label>
-                    <input type="text" name="naslov" class="form-control" />
+                    <input type="text" <?php if (isset($objava["naziv"])){ ?>value="<?php echo($objava["naziv"]); }?>" name="naslov" class="form-control" />
                 </div>
                 <div class="form-group">
                     <label>Datum objave:</label>
-                    <input type="date" class="form-control" name="datum" />
+                    <input type="date" class="form-control" <?php if (isset($objava["datum"])){ ?>value="<?php echo($objava["datum"]); }?>" name="datum" />
                 </div>
                 <div class="form-group">
                     <label>Slika objave:</label>
                     <input type="file" class="form-control" name="slika" />
+                    <?php if (isset($objava["slika"]) && $objava["slika"] != "") { ?>
+                    <img class="img img-fluid" src="../ucitavanja/<?php echo ($objava["slika"]); ?>" />
+                    <?php } ?>
                 </div>
                 <div class="form-group">
                     <label>Unesite tekst objave</label>
-                    <textarea name="tekst"  class="form-control"></textarea>
+                    <textarea name="tekst"  class="form-control"><?php if (isset($objava["tekst"])){ echo($objava["tekst"]); }?></textarea>
                 </div>
-                <input type="submit" value="Dodaj objavu" class="btn btn-primary" />
+                <input type="submit" value="<?php if (isset($objava["datum"])){ echo("Uredi objavu"); } else { echo("Dodaj objavu"); }?>"" class="btn btn-primary" />
             </form>
         </div>
         <div class="col">
@@ -69,6 +82,7 @@ include ("../zaglavlje.php");
             <?php echo ($objava["tekst"]) ?>
             </p>
             <a href="brisi.php?id=<?php echo ($objava["id"]) ?>" class="btn btn-danger">Pobrisi</a>
+            <a href="dodaj.php?id=<?php echo ($objava["id"]) ?>" class="btn btn-info">Uredi</a>
             <?php
             }
             ?>
