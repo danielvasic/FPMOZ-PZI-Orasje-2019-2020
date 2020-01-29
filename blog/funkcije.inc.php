@@ -2,10 +2,10 @@
 
 include("../baza.php");
 
-function dodaj_objavu($naziv, $tekst, $datum, $konekcija){
-    $sql = "INSERT INTO post VALUES (null, ?, ?, ?)";
+function dodaj_objavu($naziv, $tekst, $naziv_slike, $datum, $konekcija){
+    $sql = "INSERT INTO post VALUES (null, ?, ?, ?, ?)";
     $upit = $konekcija->prepare($sql);
-    return $upit->execute([$naziv, $tekst, $datum]);
+    return $upit->execute([$naziv, $tekst, $naziv_slike, $datum]);
 }
 
 function pobrisi_objavu($id, $konekcija){

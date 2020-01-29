@@ -1,14 +1,18 @@
 <?php
 include ("funkcije.inc.php");
 
-if (isset($_POST["ime"])) {
-    dodaj_korisnika(
-        $_POST["ime"],
-        $_POST["prezime"],
+if (isset($_POST["email"])) {
+    $status = prijavi_korisnika(
         $_POST["email"],
         $_POST["lozinka"],
         $konekcija
     );
+
+    if ($status == false) {
+        $greska = "Neispravni korisnički podaci.";
+    } else {
+        header("Location: ../blog/dodaj.php");
+    }
 }
 
 $naslov = "Registrirajte se na sustav";
@@ -17,17 +21,12 @@ include ("../zaglavlje.php");
 
     <div class="row">
         <div class="col">
-            <form method="POST" action="registracija.php">
-                <div class="form-group">
-                    <label>Ime:</label>
-                    <input type="text" name="ime" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label>Prezime:</label>
-                    <input type="text" name="prezime" class="form-control" />
-                </div>
-
+        <?php if (isset($greska)) { ?>
+            <div class="alert alert-danger">
+            <?php echo ($greska); ?>
+            </div>
+        <?php } ?>
+            <form method="POST" action="login.php">
                 <div class="form-group">
                     <label>Email:</label>
                     <input type="email" name="email" class="form-control" />
@@ -38,7 +37,7 @@ include ("../zaglavlje.php");
                     <input type="password" name="lozinka" class="form-control" />
                 </div>
                 
-                <input type="submit" value="Registriraj se" class="btn btn-primary" />
+                <input type="submit" value="Prijavi se" class="btn btn-primary" />
             </form>
         </div>
     </div>

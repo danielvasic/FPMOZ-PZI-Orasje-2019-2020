@@ -1,6 +1,6 @@
 <?php
 
-$server = "localhost";
+$server = "192.168.64.2";
 $korisnik = "root";
 $lozinka = "";
 $baza = "pzi-blog";
@@ -11,5 +11,4 @@ try {
     echo ("Nismo se uspjeli spojiti na bazu.");
     die();
 }
-
 ?>
